@@ -1,0 +1,27 @@
+import pandas as pd
+import re
+
+# --- 分子式過濾函式：只保留 C、H、O ---
+def is_CHO_only(formula):
+    if pd.isna(formula):
+        return False
+    elements = re.findall(r'([A-Z][a-z]?)', formula)
+    return all(elem in {"C", "H", "O"} for elem in elements)
+
+# --- 主程式 ---
+def main():
+    input_file = "formula_unmatched.csv"
+    output_file = "unmatched_CHO_only.csv"
+
+    print(f"📥 讀取檔案：{input_file}")
+    df = pd.read_csv(input_file)
+
+    print(f"🔍 篩選只包含 C/H/O 的分子式...")
+    df_filtered = df[df["Molecular_Formula"].apply(is_CHO_only)]
+
+    print(f"✅ 保留筆數：{len(df_filtered)} / {len(df)}")
+    print(f"💾 輸出檔案：{output_file}")
+    df_filtered.to_csv(output_file, index=False)
+
+if __name__ == "__main__":
+    main()
