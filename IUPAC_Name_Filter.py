@@ -3,8 +3,10 @@ import pandas as pd
 # 檔案路徑
 #input_file = "hydroxyphenyl.csv"
 #output_file = "4-hydroxyphenyl.csv"
-input_file = "dihydroxyphenyl.csv"
-output_file = "3,4-dihydroxyphenyl.csv"
+#input_file = "dihydroxyphenyl.csv"
+#output_file = "3,4-dihydroxyphenyl.csv"
+input_file = "diol.csv"
+output_file = "1,2-diol.csv"
 
 # 要保留的欄位
 columns_to_keep = [
@@ -23,7 +25,8 @@ filtered_chunks = []
 
 for chunk in pd.read_csv(input_file, usecols=columns_to_keep, chunksize=chunk_size):
     #filtered = chunk[chunk["IUPAC_Name"].str.contains(r"\(4-hydroxyphenyl\)", na=False)]
-    filtered = chunk[chunk["IUPAC_Name"].str.contains(r"\(3,4-dihydroxyphenyl\)", na=False)]
+    #filtered = chunk[chunk["IUPAC_Name"].str.contains(r"\(3,4-dihydroxyphenyl\)", na=False)]
+    filtered = chunk[chunk["IUPAC_Name"].str.contains("1,2-diol", na=False)]
     filtered_chunks.append(filtered)
 
 # 合併並輸出

@@ -15,8 +15,8 @@ def add_oxygen(formula):
         return formula[:o_index+1] + "1" + after_o
 
 # --- 載入資料 ---
-x_file = "hydro_xx.csv"
-y_file = "3,4-dihydroxyphenyl.csv"
+x_file = "unmatchedY1_CHO_only.csv"
+y_file = "1,2-diol.csv"
 
 df_x = pd.read_csv(x_file)
 df_y = pd.read_csv(y_file)
@@ -25,7 +25,7 @@ df_y = pd.read_csv(y_file)
 y_formula_to_cid = dict(zip(df_y["Molecular_Formula"], df_y["Compound_CID"]))
 
 # --- 加一個 O 並建立 Modified_Formula 欄位 ---
-df_x["Modified_Formula"] = df_x["Molecular_Formula"].apply(add_oxygen)
+# df_x["Modified_Formula"] = df_x["Molecular_Formula"].apply(add_oxygen)
 
 # --- 對應 Y 中的 CID（有則記錄，無則 NaN）---
 df_x["Matched_Y_CID"] = df_x["Modified_Formula"].map(y_formula_to_cid)
@@ -35,9 +35,9 @@ df_unmatched = df_x[df_x["Matched_Y_CID"].isna()]      # 沒對到的
 df_matched   = df_x[df_x["Matched_Y_CID"].notna()]     # 有對到的
 
 # --- 輸出檔案 ---
-df_unmatched.to_csv("formula_unmatched.csv", index=False)
-df_matched.to_csv("formula_matched.csv", index=False)
+df_unmatched.to_csv("unmatchY1_unmatchY2.csv", index=False)
+df_matched.to_csv("unmatchY1_matchY2.csv", index=False)
 
 # --- 統計結果 ---
-print(f"❌ 未匹配數量：{len(df_unmatched)} → formula_unmatched.csv")
-print(f"✅ 已匹配數量：{len(df_matched)}   → formula_matched.csv")
+print(f"❌ 未匹配數量：{len(df_unmatched)} → unmatchY1_unmatchY2.csv")
+print(f"✅ 已匹配數量：{len(df_matched)}   → unmatchY1_matchY2.csv")
