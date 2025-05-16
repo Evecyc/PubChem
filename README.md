@@ -18,6 +18,10 @@ For Z
     比對 hydro_xx.csv 和 3,4-dihydroxyphenyl.csv
     找到 21503 筆匹配的分子式 -> formula_matched.csv
     33647 筆未匹配的分子式 -> formula_unmatched.csv
+    從 formula_matched.csv 和 formula_unmatched.csv 中分離出僅包含C、H、O元素的分子
+    matched.csv 中 10887 筆只含C、H、O的 -> matched_CHO_only.csv
+    ummatched.csv 中 1746 筆只含C、H、O的 -> unmatched_CHO_only.csv
+
 
 
 CO x6 y7 from right
