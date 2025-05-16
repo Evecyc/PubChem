@@ -15,8 +15,8 @@ def add_oxygen(formula):
         return formula[:o_index+1] + "1" + after_o
 
 # --- 載入資料 ---
-x_file = "unmatchedY1_CHO_only.csv"
-y_file = "1,2-diol.csv"
+x_file = "unmatchY1.csv"
+y_file = "1,2-diol_CHO.csv"
 
 df_x = pd.read_csv(x_file)
 df_y = pd.read_csv(y_file)

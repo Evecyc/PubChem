@@ -1,5 +1,30 @@
 # PubChem
 
+## 正式階段
+For X
+    從 PubChem 網站以關鍵字 "hydroxyphenyl" 搜尋，下載 1291373 筆資料 -> hydroxyphenyl.csv
+    利用 python 過濾後剩 573903 筆包含 (4-hydroxyphenyl) -> 4-hydroxyphenyl.csv
+    其中 67115 筆僅包含 C H O 且不帶電 -> 4-hydroxyphenyl_CHO.csv
+
+For Y1
+    從 PubChem 網站以關鍵字 "dihydroxyphenyl" 搜尋，下載 146768 筆資料 -> dihydroxyphenyl.csv
+    過濾後剩 79215 筆包含 (3,4-dihydroxyphenyl) -> 3,4-dihydroxyphenyl.csv 
+    其中 32655 筆僅包含 C H O 且不帶電 -> 3,4-dihydroxyphenyl_CHO.csv
+
+For Y2
+    從 PubChem 網站以關鍵字 "diol" 搜尋，下載 634847 筆資料 -> diol.csv
+    過濾後剩 165698 筆包含 1,2-diol -> 1,2-diol.csv
+    其中 38420 筆僅包含 C H O 且不帶電 -> 1,2-diol_CHO.csv
+
+For Z
+    將 4-hydroxyphenyl_CHO.csv 先後比對 3,4-dihydroxyphenyl_CHO.csv 和 1,2-diol_CHO.csv 的分子式，得到
+    27442 筆兩者皆匹配資料 -> matchY1_matchY2.csv
+    22857 筆僅匹配 3,4-dihydroxyphenyl_CHO.csv -> matchY1_unmatchY2.csv
+    5361 筆僅匹配 1,2-diol_CHO.csv -> unmatchY1_matchY2.csv
+    11455 筆兩者皆不匹配 -> unmatchY1_unmatchY2.csv
+    
+
+### 測試階段
 For X
     從 PubChem 網站以關鍵字 "hydroxyphenyl" 搜尋，下載 1291373 筆資料 -> hydroxyphenyl.csv
     利用 python 過濾後剩 573903 筆包含 (4-hydroxyphenyl) -> 4-hydroxyphenyl.csv
