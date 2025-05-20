@@ -69,7 +69,7 @@ def analyze_compounds(
     if x_fragment:
         if "IUPAC_Name" not in x_df.columns:
             raise KeyError("X 缺少 IUPAC_Name 欄位")
-        x_df = x_df[x_df["IUPAC_Name"].str.contains(x_fragment, case=False, na=False)]
+        x_df = x_df[x_df["IUPAC_Name"].str.contains(x_fragment, case=False, regex=False, na=False)]
         if x_df.empty:
             raise ValueError(f"X 無符合片段「{x_fragment}」的化合物")
 
