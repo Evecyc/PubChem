@@ -59,21 +59,40 @@ def upload_y_files():
         messagebox.showerror("錯誤", f"讀取 Y 檔案失敗：{e}")
         return
 
-    # 先清掉舊的 Y 片段輸入框
-    for ent in y_fragment_entries:
-        ent.destroy()
+    # --------------------------------------
+    # 先清掉舊的 Y 片段 Label + Entry
+    # --------------------------------------
+    for w in y_fragment_entries:        # 這裡改名：存「所有元件」
+        w.destroy()
     y_fragment_entries.clear()
 
-    # 動態新增 Y 片段輸入框
-    base_row = 3   # row 0:X, 1:Y, 2:X片段
+    # --------------------------------------
+    # 動態新增 Y 片段 Label/Entry
+    # --------------------------------------
+    base_row = 4          # 0:X  1:Y-upload  2:X片段  3:元素指令(初始放這)→實際會重排
     for i in range(len(y_dfs)):
-        tk.Label(root, text=f"Y{i+1} 片段（可留空）：").grid(row=base_row+i, column=0, sticky="e", padx=10, pady=2)
+        lbl = tk.Label(root, text=f"Y{i+1} 片段（可留空）：")
+        lbl.grid(row=base_row+i, column=0, sticky="e", padx=10, pady=2)
         ent = tk.Entry(root, width=25)
         ent.grid(row=base_row+i, column=1, sticky="w", pady=2)
-        y_fragment_entries.append(ent)
+        # 同時存 label 與 entry，方便下次一併 destroy
+        y_fragment_entries.extend([lbl, ent])
 
-    # 把「執行分析」按鈕往下推
-    run_btn.grid(row=base_row+len(y_dfs), column=0, columnspan=3, pady=15)
+    # --------------------------------------
+    # 把「元素調整指令」Label/Entry 重新排到最下面
+    # --------------------------------------
+    delta_label.grid_forget()     # 先移除舊 grid (不刪 widget)
+    delta_entry.grid_forget()
+
+    row_after_Y = base_row + len(y_dfs)
+    delta_label.grid(row=row_after_Y,   column=0, sticky="e", padx=10, pady=2)
+    delta_entry.grid(row=row_after_Y,   column=1, sticky="w", pady=2)
+
+    # --------------------------------------
+    # 再把「執行分析」按鈕往下一列推
+    # --------------------------------------
+    run_btn.grid(row=row_after_Y + 1, column=0, columnspan=3, pady=15)
+
 
 # --------------------------------------------------
 # GUI callback
@@ -140,6 +159,7 @@ def run_analysis():
 root = tk.Tk()
 root.title("PubChem 化學結構比對工具（上傳版）")
 
+
 # X 上傳
 tk.Label(root, text="請上傳 X 檔案：").grid(row=0, column=0, sticky="w", padx=10, pady=5)
 tk.Button(root, text="上傳 X 檔案", command=upload_x_file)\
@@ -161,17 +181,18 @@ tk.Label(root, text="X 片段（可留空）：")\
 x_fragment_entry = tk.Entry(root, width=25)
 x_fragment_entry.grid(row=2, column=1, sticky="w", pady=5)
 
-#####
-# 在 X片段 下面多一行
-tk.Label(root, text="元素調整指令（如 +O, +2H,-C）：")\
-    .grid(row=3, column=0, sticky="e", padx=10, pady=2)
-delta_entry = tk.Entry(root, width=25)
-delta_entry.insert(0, "+O")          # 預設值
-delta_entry.grid(row=3, column=1, sticky="w", pady=2)
 
+# 先建立元件，存成全域變數
+delta_label = tk.Label(root, text="元素調整指令（如 +O, +2H,-C）：")
+delta_entry = tk.Entry(root, width=25)
+delta_entry.insert(0, "+O")        # 預設值
+
+# 一開始暫放在 row 3（之後 upload_y_files 會重新排位置）
+delta_label.grid(row=3, column=0, sticky="e", padx=10, pady=2)
+delta_entry.grid(row=3, column=1, sticky="w", pady=2)
 
 # 執行按鈕 (row 3 會被動態調整)
 run_btn = tk.Button(root, text="執行分析並產生檔案", command=run_analysis)
-run_btn.grid(row=3, column=0, columnspan=3, pady=15)
+run_btn.grid(row=4, column=0, columnspan=3, pady=15)
 
 root.mainloop()
