@@ -87,7 +87,7 @@ def analyze_compounds(
         if frag:
             if "IUPAC_Name" not in y.columns:
                 raise KeyError(f"Y{idx} 缺少 IUPAC_Name 欄位")
-            y = y[y["IUPAC_Name"].str.contains(frag, case=False, na=False)]
+            y = y[y["IUPAC_Name"].str.contains(frag, case=False, regex=False, na=False)]
             if y.empty:
                 print(f"⚠️  Y{idx} 無符合片段「{frag}」，將以空表比對")
         new_y_dfs.append(y)
