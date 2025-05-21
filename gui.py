@@ -11,7 +11,8 @@ from analyze_compounds import analyze_compounds
 x_df = pd.DataFrame()
 y_dfs = []
 y_fragment_entries = []   # 動態 Entry 物件
-
+y_fragment_widgets = []   # Label + Entry → 只用來 destroy
+y_fragment_entries = []   # 只存 Entry   → 供 run_analysis 讀 value
 # --------------------------------------------------
 # Helper: dynamic description
 # --------------------------------------------------
@@ -72,11 +73,13 @@ def upload_y_files():
     base_row = 4          # 0:X  1:Y-upload  2:X片段  3:元素指令(初始放這)→實際會重排
     for i in range(len(y_dfs)):
         lbl = tk.Label(root, text=f"Y{i+1} 片段（可留空）：")
+        ent = tk.Entry(root, width=25)
         lbl.grid(row=base_row+i, column=0, sticky="e", padx=10, pady=2)
         ent = tk.Entry(root, width=25)
         ent.grid(row=base_row+i, column=1, sticky="w", pady=2)
         # 同時存 label 與 entry，方便下次一併 destroy
-        y_fragment_entries.extend([lbl, ent])
+        y_fragment_widgets.extend([lbl, ent])
+        y_fragment_entries.append(ent) 
 
     # --------------------------------------
     # 把「元素調整指令」Label/Entry 重新排到最下面
