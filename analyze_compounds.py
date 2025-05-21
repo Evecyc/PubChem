@@ -1,5 +1,6 @@
 import pandas as pd
 import re
+from formula_utils import parse_delta, adjust_formula
 
 
 # --------------------------------------------------
@@ -43,7 +44,9 @@ def analyze_compounds(
     x_df: pd.DataFrame,
     y_dfs: list[pd.DataFrame],
     x_fragment: str | None = None,           # X 片段
-    y_fragments: list[str | None] | None = None   # 每個 Y 的片段
+    y_fragments: list[str | None] | None = None,   # 每個 Y 的片段
+    #####
+    delta_cmd: str = "+O"
 ) -> dict[str, pd.DataFrame]:
 
 
@@ -92,9 +95,17 @@ def analyze_compounds(
 
     # -------- 1. 準備 X --------
     
+    #x = x_df.copy()
+    #x = x[x["MolecularFormula"].apply(is_CHO_only)].reset_index(drop=True)
+   # 先把文字指令轉成 Counter
+   ######
+    delta = parse_delta(delta_cmd)
+
+   # -------- 1. 準備 X --------
     x = x_df.copy()
     x = x[x["MolecularFormula"].apply(is_CHO_only)].reset_index(drop=True)
-    x["Modified_Formula"] = x["MolecularFormula"].apply(add_oxygen)
+    x["Modified_Formula"] = x["MolecularFormula"].apply(lambda f: adjust_formula(f, delta))   
+    
 
     # -------- 2. 為每個 Y 建立「分子式 → CID」對照表 --------
     match_cols = []      # 儲存各 Y 的 CID 映射結果

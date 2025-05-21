@@ -98,12 +98,15 @@ def run_analysis():
         x_fragment = x_fragment_entry.get().strip() or None
         y_fragments = [(e.get().strip() or None) for e in y_fragment_entries]
 
-        # 執行分析
+        delta_cmd = delta_entry.get().strip() or "+O"
+
         generated = analyze_compounds(
-            x_df, y_dfs,
-            x_fragment=x_fragment,
-            y_fragments=y_fragments
+        x_df, y_dfs,
+        x_fragment=x_fragment,
+        y_fragments=y_fragments,
+        delta_cmd=delta_cmd
         )
+
 
         row = 11
         for key, df in generated.items():
@@ -157,6 +160,15 @@ tk.Label(root, text="X 片段（可留空）：")\
     .grid(row=2, column=0, sticky="e", padx=10, pady=5)
 x_fragment_entry = tk.Entry(root, width=25)
 x_fragment_entry.grid(row=2, column=1, sticky="w", pady=5)
+
+#####
+# 在 X片段 下面多一行
+tk.Label(root, text="元素調整指令（如 +O, +2H,-C）：")\
+    .grid(row=3, column=0, sticky="e", padx=10, pady=2)
+delta_entry = tk.Entry(root, width=25)
+delta_entry.insert(0, "+O")          # 預設值
+delta_entry.grid(row=3, column=1, sticky="w", pady=2)
+
 
 # 執行按鈕 (row 3 會被動態調整)
 run_btn = tk.Button(root, text="執行分析並產生檔案", command=run_analysis)
