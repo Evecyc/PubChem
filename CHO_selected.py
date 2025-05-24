@@ -16,8 +16,8 @@ def is_CHO_only(formula):
 
 # --- 主程式 ---
 def main():
-    input_file = "1,2-diol.csv"
-    output_file = "1,2-diol_CHO.csv"
+    input_file = "3-hydroxy-4-methoxyphenyl.csv"
+    output_file = "3-hydroxy-4-methoxyphenyl_CHO.csv"
 
     print(f"📥 讀取檔案：{input_file}")
     df = pd.read_csv(input_file)
